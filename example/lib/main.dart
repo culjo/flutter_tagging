@@ -103,7 +103,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   deleteIconColor: Colors.white,
                 );
               },
-              onChanged: () {
+              onChanged: (bool deleted) {
+                if (deleted) {
+                  print("deleted");
+                }
                 setState(() {
                   _selectedValuesJson = _selectedLanguages
                       .map<String>((lang) => '\n${lang.toJson()}')

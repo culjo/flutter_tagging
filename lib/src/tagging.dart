@@ -14,7 +14,7 @@ import 'taggable.dart';
 class FlutterTagging<T extends Taggable> extends StatefulWidget {
   /// Called every time the value changes.
   ///  i.e. when items are selected or removed.
-  final VoidCallback? onChanged;
+  final void Function(bool deleted, T)? onChanged;
 
   /// The configuration of the [TextField] that the [FlutterTagging] widget displays.
   final TextFieldConfiguration textFieldConfiguration;
@@ -258,7 +258,7 @@ class _FlutterTaggingState<T extends Taggable>
                     widget.initialItems.add(item);
                   }
                   setState(() {});
-                  widget.onChanged?.call();
+                  widget.onChanged?.call(false, item);
                   _textController.clear();
                   _focusNode.unfocus();
                 },
@@ -278,7 +278,7 @@ class _FlutterTaggingState<T extends Taggable>
             if (_additionItem != suggestion) {
               widget.initialItems.add(suggestion);
               setState(() {});
-              widget.onChanged?.call();
+              widget.onChanged?.call(false, suggestion);
               _textController.clear();
             }
           },
@@ -312,7 +312,7 @@ class _FlutterTaggingState<T extends Taggable>
               onDeleted: () {
                 widget.initialItems.remove(item);
                 setState(() {});
-                widget.onChanged?.call();
+                widget.onChanged?.call(true, item);
               },
             );
           }).toList(),
