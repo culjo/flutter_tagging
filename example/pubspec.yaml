@@ -1,16 +1,16 @@
 name: flutter_tagging_demo
 description: A Demo Application of Flutter Tagging.
-
-version: 1.0.0+1
+publish_to: none
+version: 1.0.2
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.12.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  flutter_tagging:
+  flutter_tagging_plus:
     path: ../
   flutter_syntax_view: ^4.0.0
 

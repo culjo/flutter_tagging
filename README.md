@@ -1,6 +1,13 @@
-# Flutter Tagging
+# Flutter Tagging Plus
 
-[![Pub Package](https://img.shields.io/pub/v/flutter_tagging?color=dark-green&style=flat-square)](https://pub.dartlang.org/packages/flutter_tagging) [![licence](https://img.shields.io/badge/licence-BSD--3--Clause-orange.svg)](https://github.com/sarbagyastha/flutter_tagging/blob/master/LICENSE)
+Forked from https://github.com/culjo/flutter_tagging as it seems abandoned.
+
+Based on https://github.com/sarbagyastha/flutter_tagging/
+
+
+
+# Details
+
 
 A flutter package with tagging or multi-select functionality. 
 Useful for adding Tag or Label Selection Forms.

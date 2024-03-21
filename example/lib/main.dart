@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_syntax_view/flutter_syntax_view.dart';
-import 'package:flutter_tagging/flutter_tagging.dart';
+import 'package:flutter_tagging_plus/flutter_tagging_plus.dart';
 
 void main() => runApp(MyApp());
 
@@ -30,7 +30,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String _selectedValuesJson = 'Nothing to show';
-  List<Language> _selectedLanguages;
+  late List<Language> _selectedLanguages;
 
   @override
   void initState() {
@@ -65,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   labelText: 'Select Tags',
                 ),
               ),
-              findSuggestions: LanguageService.getLanguages,
+              findSuggestions: getLanguages,
               additionCallback: (value) {
                 return Language(
                   name: value,
@@ -74,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               onAdded: (language) {
                 // api calls here, triggered when add to tag button is pressed
-                return Language();
+                return Language(name: language.name, position: -1);
               },
               configureSuggestion: (lang) {
                 return SuggestionConfiguration(
@@ -97,16 +97,23 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               configureChip: (lang) {
                 return ChipConfiguration(
-                  label: Text(lang.name != null ? lang.name : ""),
+                  label: Text(lang.name),
                   backgroundColor: Colors.green,
                   labelStyle: TextStyle(color: Colors.white),
                   deleteIconColor: Colors.white,
                 );
               },
-              onChanged: () {
+              onChanged: (bool deleted) {
+                if (deleted) {
+                  print("deleted");
+                }
                 setState(() {
-                  _selectedValuesJson = _selectedLanguages.map<String>((lang) => '\n${lang.toJson()}').toList().toString();
-                  _selectedValuesJson = _selectedValuesJson.replaceFirst('}]', '}\n]');
+                  _selectedValuesJson = _selectedLanguages
+                      .map<String>((lang) => '\n${lang.toJson()}')
+                      .toList()
+                      .toString();
+                  _selectedValuesJson =
+                      _selectedValuesJson.replaceFirst('}]', '}\n]');
                 });
               },
             ),
@@ -128,20 +135,19 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-/// LanguageService
-class LanguageService {
-  /// Mocks fetching language from network API with delay of 500ms.
-  static Future<List<Language>> getLanguages(String query) async {
-    await Future.delayed(Duration(milliseconds: 500), null);
-    return <Language>[
-      Language(name: 'JavaScript', position: 1),
-      Language(name: 'Python', position: 2),
-      Language(name: 'Java', position: 3),
-      Language(name: 'PHP', position: 4),
-      Language(name: 'C#', position: 5),
-      Language(name: 'C++', position: 6),
-    ].where((lang) => lang.name.toLowerCase().contains(query.toLowerCase())).toList();
-  }
+/// Mocks fetching language from network API with delay of 500ms.
+Future<List<Language>> getLanguages(String query) async {
+  await Future.delayed(Duration(milliseconds: 500), null);
+  return <Language>[
+    Language(name: 'JavaScript', position: 1),
+    Language(name: 'Python', position: 2),
+    Language(name: 'Java', position: 3),
+    Language(name: 'PHP', position: 4),
+    Language(name: 'C#', position: 5),
+    Language(name: 'C++', position: 6),
+  ]
+      .where((lang) => lang.name.toLowerCase().contains(query.toLowerCase()))
+      .toList();
 }
 
 /// Language Class
@@ -154,8 +160,8 @@ class Language extends Taggable {
 
   /// Creates Language
   Language({
-    this.name,
-    this.position,
+    required this.name,
+    required this.position,
   });
 
   @override
